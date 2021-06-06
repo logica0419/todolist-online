@@ -1,0 +1,13 @@
+"files.eol": "\n",
+"eslint.validate": [
+    "javascript",
+    "vue"
+],
+"eslint.format.enable": true,
+"editor.formatOnSave": true,
+"[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+},
+"[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+}
