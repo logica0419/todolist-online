@@ -1,14 +1,14 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <item-list />
+  <to-do-list />
 </template>
 
 <script>
-import ItemList from "./components/ItemList.vue";
+import ToDoList from "./components/ToDoList.vue";
 
 export default {
   components: {
-    ItemList,
+    ToDoList,
   },
 };
 </script>
