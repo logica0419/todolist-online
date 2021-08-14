@@ -1,14 +1,14 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <hello-world />
+  <item-list />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import ItemList from "./components/ItemList.vue";
 
 export default {
   components: {
-    HelloWorld,
+    ItemList,
   },
 };
 </script>
