@@ -43,7 +43,8 @@ export default {
   name: "ItemList",
   setup() {
     const tasks = ref([]);
-    tasks.value = JSON.parse(localStorage.getItem("todos"));
+    if (localStorage.getItem("todos"))
+      tasks.value = JSON.parse(localStorage.getItem("todos"));
     const saveData = () => {
       localStorage.setItem("todos", JSON.stringify(tasks.value));
     };
