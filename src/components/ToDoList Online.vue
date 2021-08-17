@@ -1,30 +1,21 @@
 <template>
-  <h1>ToDo-List</h1>
+  <h1>ToDo-List (Online)</h1>
   <h2>Incompleted</h2>
   <div v-for="task in tasks" :key="task.name">
-    <div v-if="task.ifcomp == false" class="item">
-      <div class="name">{{ task.name }}</div>
-      &nbsp;/&nbsp;
-      <div class="date">Deadline: {{ task.date }}</div>
-      &nbsp;
-      <button @click="modifyTask(task.name, task.date, true)">Completed</button>
-    </div>
+    <list-content-online
+      :ifcomp="false"
+      :task="task"
+      @reloadTasks="reloadTasks"
+    />
   </div>
   <h2>Completed</h2>
   <div v-for="task in tasks" :key="task.name">
-    <div v-if="task.ifcomp == true" class="item">
-      <div class="name">{{ task.name }}</div>
-      &nbsp;/&nbsp;
-      <div class="date">Deadline: {{ task.date }}</div>
-      &nbsp;
-      <button @click="modifyTask(task.name, task.date, false)">
-        Incompleted
-      </button>
-      &nbsp;
-      <button @click="deleteTask(task.name)">Delete This Task</button>
-    </div>
+    <list-content-online
+      :ifcomp="true"
+      :task="task"
+      @reloadTasks="reloadTasks"
+    />
   </div>
-
   <br />
   <div class="input">
     <label for="name">Task </label>
@@ -42,22 +33,24 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
+import ListContentOnline from "./ListContent Online.vue";
 
 export default {
-  name: "ItemList",
+  name: "TodoListOnline",
+  components: { ListContentOnline },
   setup() {
-    axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
-
     const tasks = ref([]);
+    const newTaskName = ref("");
+    const newTaskDate = ref("2021-01-01");
+
     const reloadTasks = () => {
       axios.get(`/tasks`).then((response) => {
         tasks.value = response.data;
       });
     };
-    reloadTasks();
 
-    const newTaskName = ref("");
-    const newTaskDate = ref("2021-01-01");
+    reloadTasks();
 
     const addTask = () => {
       const ifSameTask = tasks.value.some((task) => {
@@ -85,24 +78,6 @@ export default {
       }
     };
 
-    const modifyTask = (name, date, state) => {
-      const body = {
-        id: name,
-        name: name,
-        date: date,
-        ifcomp: state,
-      };
-      axios.put(`/tasks/` + name, body).then(() => {
-        reloadTasks();
-      });
-    };
-
-    const deleteTask = (name) => {
-      axios.delete(`/tasks/` + name).then(() => {
-        reloadTasks();
-      });
-    };
-
     const deleteAll = () => {
       axios.delete(`/tasks`).then(() => {
         reloadTasks();
@@ -113,9 +88,8 @@ export default {
       tasks,
       newTaskName,
       newTaskDate,
+      reloadTasks,
       addTask,
-      modifyTask,
-      deleteTask,
       deleteAll,
     };
   },
