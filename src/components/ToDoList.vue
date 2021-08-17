@@ -2,25 +2,21 @@
   <h1>ToDo-List</h1>
   <h2>Completed</h2>
   <div v-for="task in tasks" :key="task.name">
-    <div v-if="task.ifcomp == true" class="item">
-      <div class="name">{{ task.name }}</div>
-      &nbsp;/&nbsp;
-      <div class="date">Deadline: {{ task.date }}</div>
-      &nbsp;
-      <button @click="modifyState(task.name, false)">Incompleted</button>
-      &nbsp;
-      <button @click="deleteTask(task.name)">Delete This Task</button>
-    </div>
+    <list-component
+      :ifcomp="true"
+      :task="task"
+      @deleteTask="deleteTask"
+      @modifyState="modifyState"
+    ></list-component>
   </div>
   <h2>Incompleted</h2>
   <div v-for="task in tasks" :key="task.name">
-    <div v-if="task.ifcomp == false" class="item">
-      <div class="name">{{ task.name }}</div>
-      &nbsp;/&nbsp;
-      <div class="date">Deadline: {{ task.date }}</div>
-      &nbsp;
-      <button @click="modifyState(task.name, true)">Completed</button>
-    </div>
+    <list-component
+      :ifcomp="false"
+      :task="task"
+      @deleteTask="deleteTask"
+      @modifyState="modifyState"
+    ></list-component>
   </div>
   <br />
   <div class="input">
@@ -38,9 +34,11 @@
 
 <script>
 import { ref } from "vue";
+import ListComponent from "./ListContent.vue";
 
 export default {
   name: "ItemList",
+  components: { ListComponent },
   setup() {
     const tasks = ref([]);
     if (localStorage.getItem("todos"))
