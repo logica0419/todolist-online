@@ -1,14 +1,5 @@
 <template>
   <h1>ToDo-List</h1>
-  <h2>Completed</h2>
-  <div v-for="task in tasks" :key="task.name">
-    <list-component
-      :ifcomp="true"
-      :task="task"
-      @deleteTask="deleteTask"
-      @modifyState="modifyState"
-    ></list-component>
-  </div>
   <h2>Incompleted</h2>
   <div v-for="task in tasks" :key="task.name">
     <list-component
@@ -16,7 +7,16 @@
       :task="task"
       @deleteTask="deleteTask"
       @modifyState="modifyState"
-    ></list-component>
+    />
+  </div>
+  <h2>Completed</h2>
+  <div v-for="task in tasks" :key="task.name">
+    <list-component
+      :ifcomp="true"
+      :task="task"
+      @deleteTask="deleteTask"
+      @modifyState="modifyState"
+    />
   </div>
   <br />
   <div class="input">
@@ -41,14 +41,14 @@ export default {
   components: { ListComponent },
   setup() {
     const tasks = ref([]);
+    const newTaskName = ref("");
+    const newTaskDate = ref("2021-01-01");
+
     if (localStorage.getItem("todos"))
       tasks.value = JSON.parse(localStorage.getItem("todos"));
     const saveData = () => {
       localStorage.setItem("todos", JSON.stringify(tasks.value));
     };
-
-    const newTaskName = ref("");
-    const newTaskDate = ref("2021-01-01");
 
     const addTask = () => {
       const ifSameTask = tasks.value.some((task) => {
