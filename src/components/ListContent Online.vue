@@ -24,9 +24,8 @@
 </template>
 
 <script lang="ts">
-  import { Ref, ref } from "vue";
   import { defineComponent } from "@vue/runtime-core";
-  import { Tasks, Api } from "./API";
+  import { Api } from "../API";
 
   export default defineComponent({
     name: "ListComponentOnline",
@@ -40,14 +39,13 @@
       },
     },
     setup() {
-      const tasks: Ref<Tasks[]> = ref([]);
       const api = new Api();
 
       const modifyTask = (name: string, date: string, state: boolean) => {
-        api.modifyTask(tasks, name, date, state);
+        api.modifyTask(name, date, state);
       };
       const deleteTask = (name: string) => {
-        api.deleteTask(tasks, name);
+        api.deleteTask(name);
       };
 
       return { modifyTask, deleteTask };

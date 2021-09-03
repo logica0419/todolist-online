@@ -23,32 +23,36 @@
 </template>
 
 <script lang="ts">
-  import { ref, Ref, defineComponent } from "vue";
+  import { ref, defineComponent, computed } from "vue";
+  import { useStore } from "../store/store";
   import ListContentOnline from "./ListContent Online.vue";
-  import { Tasks, Api } from "./API";
+  import { Api } from "../API";
 
   export default defineComponent({
     name: "TodoListOnline",
     components: { ListContentOnline },
+    data: () => {
+      const store = useStore();
+      const tasks = computed(() => store.state.tasks);
+      return { tasks };
+    },
     setup() {
-      const tasks: Ref<Tasks[]> = ref([]);
       const newTaskName = ref("");
       const newTaskDate = ref("2021-01-01");
 
       const api = new Api();
 
-      api.reloadTasks(tasks);
+      api.reloadTasks();
 
       const addTask = () => {
-        api.addTask(tasks, newTaskName, newTaskDate);
+        api.addTask(newTaskName, newTaskDate);
       };
 
       const deleteAll = () => {
-        api.deleteAll(tasks);
+        api.deleteAll();
       };
 
       return {
-        tasks,
         newTaskName,
         newTaskDate,
         addTask,
