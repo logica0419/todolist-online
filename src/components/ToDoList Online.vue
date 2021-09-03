@@ -2,19 +2,11 @@
   <h1>ToDo-List (Online)</h1>
   <h2>Incompleted</h2>
   <div v-for="task in tasks" :key="task.name">
-    <list-content-online
-      :ifcomp="false"
-      :task="task"
-      @reloadTasks="reloadTasks"
-    />
+    <list-content-online :ifcomp="false" :task="task" />
   </div>
   <h2>Completed</h2>
   <div v-for="task in tasks" :key="task.name">
-    <list-content-online
-      :ifcomp="true"
-      :task="task"
-      @reloadTasks="reloadTasks"
-    />
+    <list-content-online :ifcomp="true" :task="task" />
   </div>
   <br />
   <div class="input">
@@ -30,76 +22,46 @@
   <button @click="deleteAll">Delete All tasks</button>
 </template>
 
-<script>
-import { ref } from "vue";
-import axios from "axios";
-axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
-import ListContentOnline from "./ListContent Online.vue";
+<script lang="ts">
+  import { ref, Ref, defineComponent } from "vue";
+  import ListContentOnline from "./ListContent Online.vue";
+  import { Tasks, Api } from "./API";
 
-export default {
-  name: "TodoListOnline",
-  components: { ListContentOnline },
-  setup() {
-    const tasks = ref([]);
-    const newTaskName = ref("");
-    const newTaskDate = ref("2021-01-01");
+  export default defineComponent({
+    name: "TodoListOnline",
+    components: { ListContentOnline },
+    setup() {
+      const tasks: Ref<Tasks[]> = ref([]);
+      const newTaskName = ref("");
+      const newTaskDate = ref("2021-01-01");
 
-    const reloadTasks = () => {
-      axios.get(`/tasks`).then((response) => {
-        tasks.value = response.data;
-      });
-    };
+      const api = new Api();
 
-    reloadTasks();
+      api.reloadTasks(tasks);
 
-    const addTask = () => {
-      const ifSameTask = tasks.value.some((task) => {
-        if (task.name == newTaskName.value) {
-          alert("同じ名前のタスクがあります。タスクが追加できません");
-          return true;
-        }
-      });
-      var ifBlankName = false;
-      if (newTaskName.value == "") {
-        alert("タスク名が無いため、タスクを追加できません");
-        ifBlankName = true;
-      }
-      if (!ifSameTask && !ifBlankName) {
-        axios
-          .post(`/tasks`, {
-            id: newTaskName.value,
-            name: newTaskName.value,
-            date: newTaskDate.value,
-            ifcomp: false,
-          })
-          .then(() => {
-            reloadTasks();
-          });
-      }
-    };
+      const addTask = () => {
+        api.addTask(tasks, newTaskName, newTaskDate);
+      };
 
-    const deleteAll = () => {
-      axios.delete(`/tasks`).then(() => {
-        reloadTasks();
-      });
-    };
+      const deleteAll = () => {
+        api.deleteAll(tasks);
+      };
 
-    return {
-      tasks,
-      newTaskName,
-      newTaskDate,
-      reloadTasks,
-      addTask,
-      deleteAll,
-    };
-  },
-};
+      return {
+        tasks,
+        newTaskName,
+        newTaskDate,
+        addTask,
+        deleteAll,
+      };
+    },
+  });
 </script>
 
 <style>
-.item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>

@@ -23,42 +23,34 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
+<script lang="ts">
+  import { Ref, ref } from "vue";
+  import { defineComponent } from "@vue/runtime-core";
+  import { Tasks, Api } from "./API";
 
-export default {
-  name: "ListComponentOnline",
-  props: {
-    ifcomp: Boolean,
-    task: {
-      type: Object,
-      default: () => {
-        return {};
+  export default defineComponent({
+    name: "ListComponentOnline",
+    props: {
+      ifcomp: Boolean,
+      task: {
+        type: Object,
+        default: () => {
+          return {};
+        },
       },
     },
-  },
-  emits: ["reloadTasks"],
-  methods: {
-    reloadTasks() {
-      this.$emit("reloadTasks");
-    },
-    modifyTask(name, date, state) {
-      const body = {
-        id: name,
-        name: name,
-        date: date,
-        ifcomp: state,
+    setup() {
+      const tasks: Ref<Tasks[]> = ref([]);
+      const api = new Api();
+
+      const modifyTask = (name: string, date: string, state: boolean) => {
+        api.modifyTask(tasks, name, date, state);
       };
-      axios.put(`/tasks/` + name, body).then(() => {
-        this.reloadTasks();
-      });
+      const deleteTask = (name: string) => {
+        api.deleteTask(tasks, name);
+      };
+
+      return { modifyTask, deleteTask };
     },
-    deleteTask(name) {
-      axios.delete(`/tasks/` + name).then(() => {
-        this.reloadTasks();
-      });
-    },
-  },
-};
+  });
 </script>
