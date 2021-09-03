@@ -31,21 +31,33 @@
   export default defineComponent({
     name: "TodoListOnline",
     components: { ListContentOnline },
-    data: () => {
+    setup() {
       const store = useStore();
       const tasks = computed(() => store.state.tasks);
-      return { tasks };
-    },
-    setup() {
       const newTaskName = ref("");
       const newTaskDate = ref("2021-01-01");
 
       const api = new Api();
-
       api.reloadTasks();
 
       const addTask = () => {
-        api.addTask(newTaskName, newTaskDate);
+        const ifSameTask = tasks.value.some((task) => {
+          if (task.name == newTaskName.value) {
+            alert("同じ名前のタスクがあります。タスクが追加できません");
+            return true;
+          }
+        });
+        const ifBlankName = () => {
+          if (newTaskName.value == "") {
+            alert("タスク名が無いため、タスクを追加できません");
+            return true;
+          }
+          return false;
+        };
+
+        if (!ifSameTask && !ifBlankName()) {
+          api.addTask(newTaskName, newTaskDate);
+        }
       };
 
       const deleteAll = () => {
@@ -53,6 +65,7 @@
       };
 
       return {
+        tasks,
         newTaskName,
         newTaskDate,
         addTask,

@@ -14,28 +14,15 @@ export class Api {
   }
 
   addTask(newTaskName: Ref<string>, newTaskDate: Ref<string>) {
-    const ifSameTask = this.tasks.value.some((task) => {
-      if (task.name == newTaskName.value) {
-        alert("同じ名前のタスクがあります。タスクが追加できません");
-        return true;
-      }
+    const body: Tasks = {
+      id: newTaskName.value,
+      name: newTaskName.value,
+      date: newTaskDate.value,
+      ifcomp: false,
+    };
+    axios.post(`/tasks`, body).then(() => {
+      this.reloadTasks();
     });
-    var ifBlankName = false;
-    if (newTaskName.value == "") {
-      alert("タスク名が無いため、タスクを追加できません");
-      ifBlankName = true;
-    }
-    if (!ifSameTask && !ifBlankName) {
-      const body: Tasks = {
-        id: newTaskName.value,
-        name: newTaskName.value,
-        date: newTaskDate.value,
-        ifcomp: false,
-      };
-      axios.post(`/tasks`, body).then(() => {
-        this.reloadTasks();
-      });
-    }
   }
 
   modifyTask(name: string, date: string, state: boolean) {
