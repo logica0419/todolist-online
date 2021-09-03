@@ -11,9 +11,6 @@ export class Api {
     axios.get(`/tasks`).then((response) => {
       this.store.dispatch("fetchTasks", response);
     });
-    setTimeout(() => {
-      console.log(this.tasks.value);
-    }, 100);
   }
 
   addTask(newTaskName: Ref<string>, newTaskDate: Ref<string>) {
