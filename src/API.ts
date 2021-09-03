@@ -1,11 +1,10 @@
-import { computed, Ref } from "vue";
+import { Ref } from "vue";
 import { useStore, Tasks } from "./store/store";
 import axios from "axios";
 axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
 
 export class Api {
   store = useStore();
-  tasks = computed(() => this.store.state.tasks);
 
   reloadTasks() {
     axios.get(`/tasks`).then((response) => {
