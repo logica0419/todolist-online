@@ -1,7 +1,7 @@
 import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
 
-export interface Tasks {
+export interface Task {
   id: string;
   name: string;
   date: string;
@@ -9,7 +9,7 @@ export interface Tasks {
 }
 
 export interface State {
-  tasks: Tasks[];
+  tasks: Task[];
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();

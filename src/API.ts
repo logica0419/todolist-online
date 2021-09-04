@@ -1,5 +1,5 @@
 import { Ref } from "vue";
-import { useStore, Tasks } from "./store/store";
+import { useStore, Task } from "./store/store";
 import axios from "axios";
 axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
 
@@ -13,7 +13,7 @@ export class Api {
   }
 
   addTask(newTaskName: Ref<string>, newTaskDate: Ref<string>) {
-    const body: Tasks = {
+    const body: Task = {
       id: newTaskName.value,
       name: newTaskName.value,
       date: newTaskDate.value,
@@ -25,7 +25,7 @@ export class Api {
   }
 
   modifyTask(name: string, date: string, state: boolean) {
-    const body: Tasks = {
+    const body: Task = {
       id: name,
       name: name,
       date: date,
