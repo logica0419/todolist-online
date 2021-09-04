@@ -64,13 +64,7 @@
         api.deleteAll();
       };
 
-      return {
-        tasks,
-        newTaskName,
-        newTaskDate,
-        addTask,
-        deleteAll,
-      };
+      return { tasks, newTaskName, newTaskDate, addTask, deleteAll };
     },
   });
 </script>
