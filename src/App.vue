@@ -1,6 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <to-do-list-online></to-do-list-online>
+  <to-do-list-online />
 </template>
 
 <script lang="ts">
