@@ -19,8 +19,8 @@ export class Api {
       date: newTaskDate.value,
       ifcomp: false,
     };
-    axios.post(`/tasks`, body).then(() => {
-      this.reloadTasks();
+    axios.post(`/tasks`, body).then((response) => {
+      this.store.dispatch("fetchTasks", response);
     });
   }
 
@@ -31,20 +31,20 @@ export class Api {
       date: date,
       ifcomp: state,
     };
-    axios.put(`/tasks/` + name, body).then(() => {
-      this.reloadTasks();
+    axios.put(`/tasks/` + name, body).then((response) => {
+      this.store.dispatch("fetchTasks", response);
     });
   }
 
   deleteTask(name: string) {
-    axios.delete(`/tasks/` + name).then(() => {
-      this.reloadTasks();
+    axios.delete(`/tasks/` + name).then((response) => {
+      this.store.dispatch("fetchTasks", response);
     });
   }
 
   deleteAll() {
-    axios.delete(`/tasks`).then(() => {
-      this.reloadTasks();
+    axios.delete(`/tasks`).then((response) => {
+      this.store.dispatch("fetchTasks", response);
     });
   }
 }
