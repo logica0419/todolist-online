@@ -7,12 +7,18 @@ export class Auth {
   store = useStore();
   api = new Api();
 
-  checkLogin() {
+  checkOnApp() {
     if (this.store.state.traQID == "") {
       this.router.push("/");
     }
-
     this.api.setAxiosUrl();
+  }
+
+  checkOnLogin() {
+    if (this.store.state.traQID != "") {
+      this.api.setAxiosUrl();
+      this.router.push("/app");
+    }
   }
 
   login(traQID: string) {

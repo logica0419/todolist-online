@@ -37,7 +37,7 @@
     components: { ListContentOnline },
     setup() {
       const auth = new Auth();
-      auth.checkLogin();
+      auth.checkOnApp();
 
       const store = useStore();
       const tasks = computed(() => store.state.tasks);

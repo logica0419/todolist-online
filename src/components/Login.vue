@@ -13,9 +13,10 @@
   export default defineComponent({
     name: "Login",
     setup() {
-      const traQID = ref("");
-
       const auth = new Auth();
+      auth.checkOnLogin();
+
+      const traQID = ref("");
 
       const login = () => {
         auth.login(traQID.value);
