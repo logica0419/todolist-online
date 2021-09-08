@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 export interface Task {
   id: string;
@@ -37,6 +38,13 @@ export const store = createStore<State>({
       context.commit("fetchTasks", response);
     },
   },
+  plugins: [
+    createPersistedState({
+      key: "TodoList",
+      paths: ["traQID"],
+      storage: window.sessionStorage,
+    }),
+  ],
 });
 
 export function useStore() {

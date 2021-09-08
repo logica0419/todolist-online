@@ -11,6 +11,8 @@ export class Auth {
     if (this.store.state.traQID == "") {
       this.router.push("/");
     }
+
+    this.api.setAxiosUrl();
   }
 
   login(traQID: string) {
