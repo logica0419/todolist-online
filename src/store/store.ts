@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
 
@@ -10,6 +11,7 @@ export interface Task {
 
 export interface State {
   tasks: Task[];
+  traQID: string;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -17,14 +19,18 @@ export const key: InjectionKey<Store<State>> = Symbol();
 export const store = createStore<State>({
   state: {
     tasks: [],
+    traQID: "",
   },
   mutations: {
-    fetchTasks(state, response) {
+    fetchTasks(state: State, response: AxiosResponse) {
       state.tasks = response.data;
+    },
+    chengeTraQID(state: State, value: string) {
+      state.traQID = value;
     },
   },
   actions: {
-    fetchTasks(context, response) {
+    fetchTasks(context, response: AxiosResponse) {
       context.commit("fetchTasks", response);
     },
   },
