@@ -1,7 +1,7 @@
 <template>
   <img alt="Vue logo" src="../assets/logo.png" />
   <br />
-  <h1>ToDo-List (Online)</h1>
+  <h1>Todo-List</h1>
   <router-view />
 </template>
 
