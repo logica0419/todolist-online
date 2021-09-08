@@ -1,14 +1,15 @@
 import { Ref } from "vue";
 import { useStore, Task } from "./store/store";
 import axios from "axios";
-axios.defaults.baseURL = `http://naro-todo-server.temma.trap.show/logica`;
+
+const store = useStore();
+axios.defaults.baseURL =
+  "http://naro-todo-server-go.logica.trap.show/" + store.state.traQID;
 
 export class Api {
-  store = useStore();
-
   reloadTasks() {
     axios.get(`/tasks`).then((response) => {
-      this.store.dispatch("fetchTasks", response);
+      store.dispatch("fetchTasks", response);
     });
   }
 
@@ -20,7 +21,7 @@ export class Api {
       ifcomp: false,
     };
     axios.post(`/tasks`, body).then((response) => {
-      this.store.dispatch("fetchTasks", response);
+      store.dispatch("fetchTasks", response);
     });
   }
 
@@ -32,19 +33,19 @@ export class Api {
       ifcomp: state,
     };
     axios.put(`/tasks/` + name, body).then((response) => {
-      this.store.dispatch("fetchTasks", response);
+      store.dispatch("fetchTasks", response);
     });
   }
 
   deleteTask(name: string) {
     axios.delete(`/tasks/` + name).then((response) => {
-      this.store.dispatch("fetchTasks", response);
+      store.dispatch("fetchTasks", response);
     });
   }
 
   deleteAll() {
     axios.delete(`/tasks`).then((response) => {
-      this.store.dispatch("fetchTasks", response);
+      store.dispatch("fetchTasks", response);
     });
   }
 }
