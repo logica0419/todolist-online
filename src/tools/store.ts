@@ -25,8 +25,11 @@ export const store = createStore<State>({
     fetchTasks(state: State, response: AxiosResponse) {
       state.tasks = response.data;
     },
-    chengeTraQID(state: State, value: string) {
+    setTraQID(state: State, value: string) {
       state.traQID = value;
+    },
+    resetTraQID(state: State) {
+      state.traQID = "";
     },
   },
   actions: {

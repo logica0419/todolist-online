@@ -1,5 +1,5 @@
 <template>
-  <h1>ToDo-List (Online)</h1>
+  <h3>User: {{ traQID }}</h3>
   <h2>Incompleted</h2>
   <div v-for="task in tasks" :key="task.name">
     <list-content-online :ifcomp="false" :task="task" />
@@ -20,20 +20,29 @@
   </div>
   <br />
   <button @click="deleteAll">Delete All tasks</button>
+  <br />
+  <br />
+  <button @click="logout">Logout</button>
 </template>
 
 <script lang="ts">
   import { ref, defineComponent, computed } from "vue";
-  import { useStore } from "../store/store";
+  import { useStore } from "../tools/store";
   import ListContentOnline from "./ListContent Online.vue";
-  import { Api } from "../API";
+  import { Api } from "../tools/API";
+  import { Auth } from "../tools/Auth";
 
   export default defineComponent({
     name: "TodoListOnline",
     components: { ListContentOnline },
     setup() {
+      const auth = new Auth();
+      auth.checkLogin();
+
       const store = useStore();
       const tasks = computed(() => store.state.tasks);
+      const traQID = computed(() => store.state.traQID);
+
       const newTaskName = ref("");
       const newTaskDate = ref("2021-01-01");
 
@@ -64,7 +73,19 @@
         api.deleteAll();
       };
 
-      return { tasks, newTaskName, newTaskDate, addTask, deleteAll };
+      const logout = () => {
+        auth.logout();
+      };
+
+      return {
+        tasks,
+        traQID,
+        newTaskName,
+        newTaskDate,
+        addTask,
+        deleteAll,
+        logout,
+      };
     },
   });
 </script>

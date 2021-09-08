@@ -2,7 +2,7 @@
 
 import { ComponentCustomProperties } from "vue";
 import { Store } from "vuex";
-import { State } from "./store/store";
+import { State } from "./tools/store";
 
 declare module "*.vue" {
   import { DefineComponent } from "vue";

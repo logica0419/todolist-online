@@ -25,7 +25,7 @@
 
 <script lang="ts">
   import { defineComponent } from "@vue/runtime-core";
-  import { Api } from "../API";
+  import { Api } from "../tools/API";
 
   export default defineComponent({
     name: "ListComponentOnline",
